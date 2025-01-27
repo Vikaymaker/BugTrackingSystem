@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Donate Chatbot</title>
+    <style>
+        /* Chatbot button style */
+        .custom-chat-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px; /* Changed to right */
+            background-color: #007bff; /* Changed color */
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px; /* Reduced border-radius */
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            z-index: 1001; /* Ensure it's above other content */
+        }
+
+        .custom-chat-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Chatbot container style */
+        .chat-container {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            width: 300px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .chat-header {
+            background-color: #007bff; /* Changed color */
+            color: white;
+            padding: 10px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-box {
+            height: 250px;
+            overflow-y: scroll;
+            padding: 10px;
+        }
+
+        .user-message {
+            background-color: #007bff; /* Changed color */
+            color: white;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin: 5px 0;
+        }
+
+        .bot-message {
+            background-color: #ddd;
+            color: #333;
+            border-radius: 5px;
+            padding: 5px 10px;
+            margin: 5px 0;
+        }
+
+        .chat-input {
+            width: calc(100% - 20px);
+            padding: 5px;
+            margin: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .send-btn {
+            display: none; /* Hide the send button */
+        }
+    </style>
+</head>
+<body>
+    <!-- Chatbot button -->
+    <div class="custom-chat-btn" onclick="toggleChat()">Chat</div>
+
+    <!-- Chatbot container -->
+    <div class="chat-container" id="chat-container">
+        <div class="chat-header">
+            <div>Food Donate Chatbot</div>
+            <div onclick="closeChat()" style="cursor: pointer;">Close</div>
+        </div>
+        <div class="chat-box" id="chat-box">
+            <div class="chat-message bot">
+                <p>hiii...welcome. How can I help you?</p>
+            </div>
+        </div>
+        <input type="text" id="user-input" placeholder="Type your message..." class="chat-input" onkeydown="if (event.keyCode === 13) sendMessage()">
+    </div>
+    <!-- Chatbot script -->
+    <script>
+        let chatOpen = false;
+
+        function toggleChat() {
+            const chatContainer = document.getElementById('chat-container');
+            chatOpen = !chatOpen;
+            if (chatOpen) {
+                chatContainer.style.display = 'block';
+            } else {
+                chatContainer.style.display = 'none';
+            }
+        }
+
+        function closeChat() {
+            const chatContainer = document.getElementById('chat-container');
+            chatContainer.style.display = 'none';
+            chatOpen = false;
+        }
+
+        function sendMessage() {
+            const userInput = document.getElementById('user-input').value;
+            const chatBox = document.getElementById('chat-box');
+
+            // Display user message
+            const userMessage = document.createElement('div');
+            userMessage.className = 'user-message';
+            userMessage.innerText = userInput;
+            chatBox.appendChild(userMessage);
+
+            // Get bot response
+            const botResponse = getBotResponse(userInput);
+
+            // Display bot message
+            const botMessage = document.createElement('div');
+            botMessage.className = 'bot-message';
+            botMessage.innerText = botResponse;
+            chatBox.appendChild(botMessage);
+
+            // Clear input
+            document.getElementById('user-input').value = '';
+
+            // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function getBotResponse(userInput) {
+            userInput = userInput.toLowerCase();
+            if (userInput.includes('hi') || userInput.includes('hello')) {
+                return 'Hi! How can I help you?';
+            } else if (userInput.includes('donate') || userInput.includes('donation')) {
+                return 'That\'s great to hear! How much food are you planning to donate?';
+            } else if (userInput.includes('food type') || userInput.includes('vegetarian') || userInput.includes('non-vegetarian')) {
+                return 'What type of food are you donating? Vegetarian or Non-vegetarian?';
+            } else if (userInput.includes('quantity')) {
+                return 'How many servings or kilograms of food are you donating?';
+            } else if (userInput.includes('pickup') || userInput.includes('drop-off') || userInput.includes('method')) {
+                return 'Would you prefer to drop off the food items or arrange for a pick-up?';
+            } else if (userInput.includes('location') || userInput.includes('address')) {
+                return 'Please provide the address or location where the food donation will be made.';
+            } else if (userInput.includes('time') || userInput.includes('schedule')) {
+                return 'Do you have a specific date and time in mind for the donation?';
+            } else if (userInput.includes('contact') || userInput.includes('phone')) {
+                return 'Could you please share a contact number where we can reach you for coordination?';
+            } else if (userInput.includes('requirements') || userInput.includes('conditions') || userInput.includes('instructions')) {
+                return 'Are there any specific requirements or conditions for the food donation?';
+            } else if (userInput.includes('thank')) {
+                return 'You\'re welcome! If you need any further assistance, feel free to ask.';
+            } else {
+                return 'I\'m just a simple chatbot. How can I assist you with your food donation?';
+            }
+        }
+    </script>
+</body>
+</html>
